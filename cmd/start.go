@@ -1,4 +1,4 @@
-// Copyright © 2018 NAME HERE <EMAIL ADDRESS>
+// Copyright © 2018 Xander Guzman <xander.guzman@xanderguzman.com>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	pb "github.com/theshadow/rolld/server"
+	"github.com/theshadow/rolld/server"
 )
 
 // startCmd represents the start command
@@ -39,7 +39,7 @@ var startCmd = &cobra.Command{
 		done := make(chan struct{})
 
 		srv := grpc.NewServer()
-		pb.RegisterRollerServer(srv, rpc.New(srv, done))
+		server.RegisterRollerServer(srv, server.New(srv, done))
 		reflection.Register(srv)
 
 		go srv.Serve(lis)
