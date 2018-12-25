@@ -23,14 +23,14 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	"github.com/theshadow/rolld/server"
+	"rolld/server"
 )
 
 // startCmd represents the start command
 var startCmd = &cobra.Command{
 	Use:   "start",
 	Short: "Starts the daemon",
-	Long: `Starts the daemon as a long running process`,
+	Long:  `Starts the daemon as a long running process`,
 	Run: func(cmd *cobra.Command, args []string) {
 		lis, err := net.Listen("tcp", ":50051")
 		if err != nil {
@@ -42,7 +42,12 @@ var startCmd = &cobra.Command{
 		server.RegisterRollerServer(srv, server.New(srv, done))
 		reflection.Register(srv)
 
-		go srv.Serve(lis)
+		go func() {
+			err := srv.Serve(lis)
+			if err != nil {
+				log.Fatalf("failed to start rpc server: %s", err)
+			}
+		}()
 
 		<-done
 

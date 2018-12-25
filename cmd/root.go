@@ -34,7 +34,7 @@ var cfgFile string
 var rootCmd = &cobra.Command{
 	Use:   "rolld",
 	Short: "A simple gRPC project with an interface for rolling dice",
-	Long: `This is a gRPC wrapper for rolling dice built on top of the github.com/theshadow/dice library`,
+	Long:  `This is a gRPC wrapper for rolling dice built on top of the github.com/theshadow/dice library`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
