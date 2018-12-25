@@ -23,7 +23,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	"rolld/server"
+	"github.com/theshadow/rolld/server"
 )
 
 // startCmd represents the start command
