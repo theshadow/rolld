@@ -1,0 +1,3 @@
+* Rolld - CLI client
+
+Provides a tool for executing Roll() against the Rolld server.
