@@ -20,7 +20,7 @@
 
 package main
 
-import "rolld/cmd"
+import "github.com/theshadow/rolld/cmd"
 
 func main() {
 	cmd.Execute()
