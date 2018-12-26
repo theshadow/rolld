@@ -1,0 +1,3 @@
+* Rolld gRPC Client
+
+The rolld gRPC client connects to the specified address and allows the user to execute commands from the CLI.

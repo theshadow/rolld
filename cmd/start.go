@@ -26,13 +26,15 @@ import (
 	"github.com/theshadow/rolld/server"
 )
 
+var address string
+
 // startCmd represents the start command
 var startCmd = &cobra.Command{
 	Use:   "start",
 	Short: "Starts the daemon",
 	Long:  `Starts the daemon as a long running process`,
 	Run: func(cmd *cobra.Command, args []string) {
-		lis, err := net.Listen("tcp", ":50051")
+		lis, err := net.Listen("tcp", address)
 		if err != nil {
 			log.Fatalf("failed to listen: %v", err)
 		}
@@ -58,13 +60,6 @@ var startCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(startCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// startCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// startCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	startCmd.Flags().StringVarP(&address, "address", "a",
+		":50051", "A host and port in the form of 'host:port' to listen on.")
 }
