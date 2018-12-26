@@ -35,7 +35,7 @@ import (
 var address string
 
 // startCmd represents the start command
-var startCmd = &cobra.Command{
+var rollCmd = &cobra.Command{
 	Use:   "roll",
 	Short: "Rolls some dice",
 	Long:  `Takes a roll formula and rolls the corresponding dice returning the result.`,
@@ -93,8 +93,8 @@ func FromgRPCRoll(roll server.Result) (dice.Results, error) {
 }
 
 func init() {
-	rootCmd.AddCommand(startCmd)
+	rootCmd.AddCommand(rollCmd)
 
-	startCmd.Flags().StringVarP(&address, "address", "a",
+	rollCmd.Flags().StringVarP(&address, "address", "a",
 		":50051", "A host and port in the form of 'host:port' to listen on.")
 }
