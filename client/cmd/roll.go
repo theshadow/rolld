@@ -34,9 +34,9 @@ import (
 
 var address string
 
-// startCmd represents the start command
+// rollCmd calls on the gRPC function Roll()
 var rollCmd = &cobra.Command{
-	Use:   "roll",
+	Use:   "roll <formula>",
 	Short: "Rolls some dice",
 	Long:  `Takes a roll formula and rolls the corresponding dice returning the result.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -45,7 +45,7 @@ var rollCmd = &cobra.Command{
 		}
 
 		// create connection.
-		conn, err := grpc.Dial(":50051", grpc.WithInsecure())
+		conn, err := grpc.Dial(address, grpc.WithInsecure())
 		if err != nil {
 			return err
 		}
@@ -96,5 +96,5 @@ func init() {
 	rootCmd.AddCommand(rollCmd)
 
 	rollCmd.Flags().StringVarP(&address, "address", "a",
-		":50051", "A host and port in the form of 'host:port' to listen on.")
+		":50051", "The host:port to connect to.")
 }

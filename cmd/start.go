@@ -16,7 +16,10 @@ package cmd
 
 import (
 	"log"
+	"math/rand"
 	"net"
+	"strconv"
+	"time"
 
 	"github.com/spf13/cobra"
 
@@ -27,17 +30,31 @@ import (
 )
 
 var address string
+var seed string
 
 // startCmd represents the start command
 var startCmd = &cobra.Command{
 	Use:   "start",
 	Short: "Starts the daemon",
 	Long:  `Starts the daemon as a long running process`,
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		lis, err := net.Listen("tcp", address)
 		if err != nil {
 			log.Fatalf("failed to listen: %v", err)
+			return err
 		}
+
+		s := time.Now().UTC().UnixNano()
+		if len(seed) > 0 {
+			s, err = strconv.ParseInt(seed, 10, 64)
+			if err != nil {
+				log.Fatalf("failed to convert seed %s: %s", seed, err)
+				return err
+			}
+		}
+
+		rand.Seed(s)
+
 		done := make(chan struct{})
 
 		srv := grpc.NewServer()
@@ -54,6 +71,8 @@ var startCmd = &cobra.Command{
 		<-done
 
 		srv.GracefulStop()
+
+		return nil
 	},
 }
 
@@ -62,4 +81,6 @@ func init() {
 
 	startCmd.Flags().StringVarP(&address, "address", "a",
 		":50051", "A host and port in the form of 'host:port' to listen on.")
+	startCmd.Flags().StringVarP(&seed, "seed", "s",
+		"", "Set the seed for the RNG, must be a valid in64 value.")
 }
